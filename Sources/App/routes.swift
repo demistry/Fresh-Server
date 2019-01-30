@@ -7,9 +7,17 @@ public func routes(_ router: Router) throws {
         return "It works!"
     }
     
+    
+    let userRouteGroup = router.grouped("api/user")
     // Basic "Hello, world!" example
-    router.get("hello") { req in
-        return "Hello, world!"
+    userRouteGroup.get("login") { req -> String in
+        let username = try req.query.get(String.self, at: "username")
+        let ID = try req.query.get(Int.self, at: "id")
+        return "User : \(username) logged in with ID of \(ID)"
+    }
+    router.get("getTodo"){ req->Todo in
+        return Todo(id: 16, title: "My New Todo")
+        
     }
 
     // Example of configuring a controller
