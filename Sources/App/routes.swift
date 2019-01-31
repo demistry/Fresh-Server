@@ -8,16 +8,20 @@ public func routes(_ router: Router) throws {
     }
     
     
-    let userRouteGroup = router.grouped("api/user")
+    let userRouteGroup = router.grouped("user")
     // Basic "Hello, world!" example
     userRouteGroup.get("login") { req -> String in
         let username = try req.query.get(String.self, at: "username")
         let ID = try req.query.get(Int.self, at: "id")
         return "User : \(username) logged in with ID of \(ID)"
     }
-    router.get("getTodo"){ req->Todo in
-        return Todo(id: 16, title: "My New Todo")
-        
+    
+    userRouteGroup.post(User.self, at: "create") { (request, user) -> Future<User> in
+        return user.save(on: request)
+    }
+    
+    userRouteGroup.get("allUsers") { (request) -> Future<[User]> in
+        return User.query(on: request).all()
     }
 
     // Example of configuring a controller
