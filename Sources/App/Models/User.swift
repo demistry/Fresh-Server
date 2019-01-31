@@ -25,6 +25,10 @@ final class User : Content {
     }
 }
 
+extension User : Parameter{
+    
+}
+
 extension User : SQLiteModel{//different models exist depending on ID type
     static let entity : String = "Users "//creates by default name of model with plural->s
 }
